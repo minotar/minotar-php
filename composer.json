@@ -1,0 +1,26 @@
+{
+    "name": "minotar/minotar-php",
+    "description": "PHP package for displaying and caching minotars!",
+    "license": "MIT",
+    "keywords": ["minotar", "minecraft", "profile", "avatar"],
+    "authors": [
+        {
+            "name": "Connor Peet",
+            "email": "connor@peet.io"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Minotar\\": "src/minotar/minotar-php/"
+        }
+    },
+    "require": {
+        "php": ">=5.3.0",
+        "symfony/http-kernel": "~2.4",
+        "desarrolla2/cache": "v1.7.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "3.7.*"
+    }
+}
