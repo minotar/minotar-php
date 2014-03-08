@@ -22,6 +22,9 @@ class Datauri implements MinotarEncoderInterface
     public function make($config, $path)
     {
         $response = $this->adapter->retrieve($config, $path);
+        if (!$response) {
+            return false;
+        }
 
         $output = base64_encode($response);
 
