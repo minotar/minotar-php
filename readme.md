@@ -40,8 +40,9 @@ $minotar->avatar('connor4312');
 ##### serve.php
 ```
 include('minotar.php');
-
-$minotar->serve();
+// To serve requests, it's just a different encoder!
+Minotar\Minotar::adapter('serve');
+Minotar::get(@$_GET['minotar'])->send(); // The minotar path is appended here
 ```
 
 Not too hard, eh? Read on for some more fun and advanced usage.
