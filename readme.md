@@ -42,7 +42,7 @@ Minotar\Minotar::avatar('connor4312');
 ```
 include('minotar.php');
 // To serve requests, it's just a different encoder!
-Minotar\Minotar::adapter('serve');
+Minotar\Minotar::encoder('serve');
 
 // Note: it is important that *nothing*, not even a blank line, is send before this
 Minotar::get(@$_GET['minotar'])->send();
@@ -66,6 +66,7 @@ After you call this function, subsequent MinotarDisplays that are made will use 
  - `Minotar::encoder('url', 'http://example.com/path/to/serve.php')` - Using the "url" adapter tells Minotar that you are caching and want to serve the images locally, off the given URL.
  - `Minotar::encoder('raw')` - Using the "raw" encoder will simply cause the default Minotar URL to be displayed.
  - `Minotar::encoder('datauri')` - Using the "datauri" encoder causes Minotars to be, expected, displayed as [Data URIs](http://css-tricks.com/data-uris/). This may be useful in some cases, and is quite easy to set up. The primary disadvantage is that the client's browser will not cache the displayed Minotars. It may be desirable to use in some cases, such as displaying many small Minotars, for example.
+ - `Minotar::encoder('serve')` - The `serve` encoder is a bit of a special one. It returns a response (Symfony/HttpKernel) with the requested image, and caching headers built-in to tell the user's browser to cache the Minotar. This is designed to be used in tandem with the "url" encoder (see the example above).
 
 ## Closing Remarks
 
