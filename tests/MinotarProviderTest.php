@@ -45,4 +45,11 @@ class MinotarProvideTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(Minotar::bar(), 'foo', 'Minotar does not pass static calls to default display');
     }
+
+    public function testPassesConstructionToAdapter()
+    {
+        $e = Minotar::encoder('url', 'foo');
+
+        $this->assertEquals($e->url, 'foo', 'Minotar does not pass contructors to encoders.');
+    }
 } 

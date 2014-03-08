@@ -3,21 +3,34 @@
 namespace Minotar\Encoder;
 
 use Minotar\MinotarEncoderInterface;
+use Minotar\MinotarAdapterInterface;
 
 class Datauri implements MinotarEncoderInterface
 {
     const IMAGE_TYPE = 'png';
 
-    public function make($data)
+    /**
+     * @var MinotarAdapterInterface The cache adapter to use
+     */
+    protected $adapter;
+
+    public function __construct(MinotarAdapterInterface $adapter)
     {
-        $output = base64_encode($data);
+        $this->adapter = $adapter;
+    }
+
+    public function make($config, $path)
+    {
+        $response = $this->adapter->retrieve($config, $path);
+
+        $output = base64_encode($response);
 
         return $this->formatDataURI($output);
     }
 
     /**
      * Adds appropriate metadata the base64 encoded image
-     * @param $data
+     * @param $data string
      * @return string
      */
     protected function formatDataURI($data)

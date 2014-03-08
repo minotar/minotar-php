@@ -16,20 +16,14 @@ class MinotarDisplay {
     protected $encoder;
 
     /**
-     * @var AbstractAdapter The cache adapter to use
-     */
-    protected $adapter;
-
-    /**
      * @var MinotarEncoderInterface The resource handler to use for displaying graphics
      */
     public $resource;
 
-    public function __construct(array $config, MinotarEncoderInterface $encoder, MinotarAdapterInterface $adapter)
+    public function __construct(array $config, MinotarEncoderInterface $encoder)
     {
         $this->config = $config;
         $this->encoder = $encoder;
-        $this->adapter = $adapter;
     }
 
     /**
@@ -120,7 +114,6 @@ class MinotarDisplay {
      */
     public function get($path)
     {
-        $response = $this->adapter->retrieve($this->config, $path);
-        return $this->encoder->make($response);
+        return $this->encoder->make($this->config, $path);
     }
 } 

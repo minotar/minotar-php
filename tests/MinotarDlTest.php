@@ -1,6 +1,7 @@
 <?php
 
 use Minotar\MinotarDl;
+use Minotar\Exception\MissingExtensionException;
 
 class MinotarDlTest extends PHPUnit_Framework_TestCase
 {
@@ -10,6 +11,8 @@ class MinotarDlTest extends PHPUnit_Framework_TestCase
         // strange errors anyway.
 
         $c = new MinotarDl;
-        $c->download(array('timeout' => 1), 'avatar/connor4312');
+        try {
+            $c->download(array('timeout' => 1), 'avatar/connor4312');
+        } catch (MissingExtensionException $e) {} // Don't particular care if Curl isn't installed during testing
     }
 } 

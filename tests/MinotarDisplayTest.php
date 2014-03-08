@@ -55,13 +55,10 @@ class MinotarDisplayTest extends PHPUnit_Framework_TestCase
 
     protected function makeForReqs()
     {
-        $a = m::mock('Minotar\\MinotarAdapterInterface');
-        $a->shouldReceive('retrieve')->andReturn('bar');
-
         $e = m::mock('Minotar\\MinotarEncoderInterface');
-        $e->shouldReceive('make')->with('bar')->andReturn('baz');
+        $e->shouldReceive('make')->andReturn('baz');
 
-        return new MinotarDisplay(array(), $e, $a);
+        return new MinotarDisplay(array(), $e);
     }
 
     public function testAvatar()
