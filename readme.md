@@ -1,5 +1,8 @@
 #Minotar-PHP
 
+[![Build Status](https://travis-ci.org/minotar/minotar-php.png)](https://travis-ci.org/minotar/minotar-php) 
+[![Coverage Status](https://coveralls.io/repos/minotar/minotar-php/badge.png)](https://coveralls.io/r/minotar/minotar-php)
+
 As much as we'd like it to be, if you've used Minotar for a length of time, you'll know that it isn't the most reliable service, out-of-the-box. After all, it is a free service, and is used by some of the most popular Minecraft sites on the net, so it takes a good bit of load.
 
 This is a nice, not-too fussy package for handling the display of Minotars on your site with caching, so that whenever your site is up, you should be able to display Minotars.
