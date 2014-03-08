@@ -5,10 +5,8 @@ namespace Minotar;
 
 interface MinotarEncoderInterface {
     /**
-     * Gets the resource at the given path
-     * @param $config array
-     * @param $path string
-     * @return mixed
+     * Returns a response for the given image string
+     * @param $data string
      */
-    public function get($config, $path);
+    public function make($data);
 } 

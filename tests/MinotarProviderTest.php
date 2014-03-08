@@ -3,8 +3,8 @@
 use Minotar\Minotar;
 use Mockery as m;
 
-class MinotarProvideTest extends PHPUnit_Framework_TestCase {
-
+class MinotarProvideTest extends PHPUnit_Framework_TestCase
+{
     public function tearDown()
     {
         m::close();
@@ -12,34 +12,28 @@ class MinotarProvideTest extends PHPUnit_Framework_TestCase {
 
     public function testGivesMinotarDisplay()
     {
-        $this->assertInstanceOf(
-            'Minotar\\MinotarDisplay',
-            Minotar::make(),
-            'Minotar is not given by the provider, nothing works D:'
-        );
-    }
+        $m = m::mock('Minotar\\MinotarDisplay');
+        Minotar::app()->instance('Minotar\\MinotarDisplay', $m);
 
-    public function testSetsDisplayConfig()
-    {
-        $m = Minotar::make(array('time' => 42));
-
-        $this->assertEquals($m->getConfig('time'), 42, 'MinotarDisplay\'s config is not set by the instantiator.');
+        $this->assertEquals($m, Minotar::make(), 'Minotar is not given by the provider, nothing works D:');
     }
 
     public function testProvidesAdapter()
     {
-        m::mock('overload:Desarrolla2\\Cache\\Adapter\\Foo');
+        $m = m::mock('Desarrolla2\\Cache\\Adapter\\AbstractAdapter');
+        Minotar::app()->instance('Desarrolla2\\Cache\\Adapter\\Foo', $m);
         $a = Minotar::adapter('foo');
 
-        $this->assertInstanceOf('Desarrolla2\\Cache\\Adapter\\Foo', $a, 'Minotar does not return the expected adapter.');
+        $this->assertEquals($m, $a, 'Minotar does not return the expected adapter.');
     }
 
     public function testProvidesEncoder()
     {
-        m::mock('overload:Encoder\\Foo');
+        $m = m::mock('Minotar\\MinotarEncoderInterface');
+        Minotar::app()->instance('Minotar\\Encoder\\Foo', $m);
         $e = Minotar::encoder('foo');
 
-        $this->assertInstanceOf('Encoder\\Foo', $e, 'Minotar does not return the expected adapter.');
+        $this->assertEquals($m, $e, 'Minotar does not return the expected adapter.');
     }
 
     public function testPassesStaticToMinotarDisplay()

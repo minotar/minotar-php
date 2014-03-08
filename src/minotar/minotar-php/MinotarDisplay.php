@@ -2,7 +2,6 @@
 
 namespace Minotar;
 
-use \Desarrolla2\Cache\Adapter\AbstractAdapter;
 
 class MinotarDisplay {
 
@@ -17,14 +16,20 @@ class MinotarDisplay {
     protected $encoder;
 
     /**
+     * @var AbstractAdapter The cache adapter to use
+     */
+    protected $adapter;
+
+    /**
      * @var MinotarEncoderInterface The resource handler to use for displaying graphics
      */
     public $resource;
 
-    public function __construct(array $config, MinotarEncoderInterface $encoder)
+    public function __construct(array $config, MinotarEncoderInterface $encoder, MinotarAdapterInterface $adapter)
     {
         $this->config = $config;
         $this->encoder = $encoder;
+        $this->adapter = $adapter;
     }
 
     /**
@@ -39,11 +44,9 @@ class MinotarDisplay {
             return $this->config;
         }
 
-        if ($this->doesConfigExist($opt)) {
-            return $this->config[$opt];
-        }
+        $this->doesConfigExist($opt);
 
-        return false;
+        return $this->config[$opt];
     }
 
     /**
@@ -79,35 +82,45 @@ class MinotarDisplay {
     }
 
     /**
-     * Gets a URL (or resource URI) to the avatar for the given username
+     * Gets a response to the avatar for the given username
      * @param $username
-     * @param int $size
+     * @param int|string $size
      * @return string
      */
-    public function avatar($username, $size = null)
+    public function avatar($username, $size = '')
     {
-        return $this->encoder->get($this->config, 'avatar/' . $username . '/size');
+        return $this->get('avatar/' . $username . '/' . $size);
     }
 
     /**
-     * Gets a URL (or resource URI) to the user helm for the given username
+     * Gets a response to the user helm for the given username
      * @param $username
-     * @param int $size
+     * @param int|string $size
      * @return string
      */
-    public function helm($username, $size)
+    public function helm($username, $size = '')
     {
-        return $this->encoder->get($this->$config, 'helm/' . $username . '/size');
+        return $this->get('helm/' . $username . '/' . $size);
     }
 
     /**
-     * Gets a URL (or resource URI) to the user skin for the given username
+     * Gets a response to the user skin for the given username
      * @param $username
-     * @param int $size
      * @return string
      */
-    public function skin($username, $size)
+    public function skin($username)
     {
-        return $this->encoder->get($this->$config, 'avatar/' . $username . '/size');
+        return $this->get('skin/' . $username);
+    }
+
+    /**
+     * Lower level call to get the given path
+     * @param $path
+     * @return mixed
+     */
+    public function get($path)
+    {
+        $response = $this->adapter->retrieve($this->config, $path);
+        return $this->encoder->make($response);
     }
 } 

@@ -1,7 +1,7 @@
 <?php
 
-class MinotarHTMLBuilderTest extends PHPUnit_Framework_TestCase {
-
+class MinotarHTMLBuilderTest extends PHPUnit_Framework_TestCase
+{
     public function testFoo()
     {
         $this->assertTrue(true);

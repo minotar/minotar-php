@@ -17,6 +17,7 @@ class Minotar {
     protected static $default = array(
         'cache'    => null,
         'time'     => 60,
+        'timeout'  => 2,
         'encoder'  => null
     );
 
@@ -56,7 +57,7 @@ class Minotar {
      */
     public static function encoder()
     {
-        $instance = self::spawn(func_get_args(), 'Encoder');
+        $instance = self::spawn(func_get_args(), 'Minotar\\Encoder');
 
         self::app()->instance('Minotar\\MinotarEncoderInterface', $instance);
 
@@ -85,9 +86,22 @@ class Minotar {
     {
         if (!self::$container) {
             self::$container = new Container;
+            self::loadHooks();
         }
 
         return self::$container;
+    }
+
+    /**
+     * Loads hooks.php and binds to the IoC container.
+     */
+    protected static function loadHooks()
+    {
+        $hooks = (require dirname(__FILE__) . '/hooks.php');
+
+        foreach ($hooks as $abstract => $concrete) {
+            self::app()->bind($abstract, $concrete);
+        }
     }
 
     /**
