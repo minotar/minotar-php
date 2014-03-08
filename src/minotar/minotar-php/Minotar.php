@@ -2,6 +2,8 @@
 
 namespace Minotar;
 
+use \Illuminate\Container\Container;
+
 /**
  * This class is responsible for instantiation of new MinotarDisplay's
  * @package Minotar
@@ -19,6 +21,11 @@ class Minotar {
     );
 
     /**
+     * @var Container IoC container from Laravel, to make testing happier!
+     */
+    protected static $container;
+
+    /**
      * Returns an object, from the given config, that should be used to display Minotars on subsequent pages.
      * @param array $config
      * @return MinotarDisplay
@@ -27,7 +34,7 @@ class Minotar {
     {
         $finalConfig = array_merge(self::$default, $config);
 
-        return new MinotarDisplay($finalConfig);
+        return self::app()->make('Minotar\\MinotarDisplay', array($finalConfig));
     }
 
     /**
@@ -46,6 +53,10 @@ class Minotar {
         return $reflection->newInstanceArgs(func_get_args());
     }
 
+    /**
+     * Returns a new image encoder, for use in the make()
+     * @return object
+     */
     public static function encoder()
     {
         $args = func_get_args();
@@ -58,19 +69,24 @@ class Minotar {
         return $reflection->newInstanceArgs(func_get_args());
     }
 
+    public static function app()
+    {
+        if (!self::$container) {
+            self::$container = new Container;
+        }
+
+        return self::$container;
+    }
+
     /**
      * Magic method to allow for quick calling of MinotarDisplays with the default config.
      * @param $name
      * @param $arguments
      * @return mixed
      */
-    public static function __classStatic($name, $arguments)
+    public static function __callStatic($name, $arguments)
     {
-        $m = new MinotarDisplay(self::$default);
-
-        if (!method_exists($m, $name)) {
-            return \BadMethodCallException('Method ' . $m . ' does not exist on Minotar!');
-        }
+        $m = self::app()->make('Minotar\\MinotarDisplay', array(self::$default));
 
         return call_user_func_array(array($m, $name), $arguments);
     }

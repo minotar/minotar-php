@@ -44,7 +44,7 @@ class MinotarDisplay {
     {
         if ($value === null && is_array($opt)) {
             $this->config = array_merge($this->config, $opt);
-        } elseif ($this->doesConfigExist($opt)) {
+        } else {
             $this->config[$opt] = $value;
         }
 
