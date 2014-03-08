@@ -23,10 +23,14 @@ This is a basic example, showing how one would cache Minotars to your server, an
 #### minotar.php
 
 ```
+<?php
+require 'vendor/autoload.php';
+
+// And the "adapter" to use for caching. This should be called *before* the encoder,
+// as some encoders need an adapter in their DI
+Minotar\Minotar::adapter('file', your/cache/directory');
 // First, we want to set the "encoder" to use for display...
 Minotar\Minotar::encoder('url', 'http://example.com/serve.php');
-// And the "adapter" to use for caching
-Minotar\Minotar::adapter('file', your/cache/directory');
 // Set the cache to exist for 60 minutes
 Minotar\Minotar::config(array('time' => 60));
 ```
@@ -42,10 +46,10 @@ Minotar\Minotar::avatar('connor4312');
 ```
 include('minotar.php');
 // To serve requests, it's just a different encoder!
-Minotar\Minotar::encoder('serve');
+Minotar\Minotar::encoder('server');
 
 // Note: it is important that *nothing*, not even a blank line, is send before this
-Minotar::get(@$_GET['minotar'])->send();
+Minotar\Minotar::get(@$_GET['minotar'])->send();
 ```
 
 Not too hard, eh? Read on for some more fun and advanced usage.
@@ -66,11 +70,15 @@ After you call this function, subsequent MinotarDisplays that are made will use 
  - `Minotar::encoder('url', 'http://example.com/path/to/serve.php')` - Using the "url" adapter tells Minotar that you are caching and want to serve the images locally, off the given URL.
  - `Minotar::encoder('raw')` - Using the "raw" encoder will simply cause the default Minotar URL to be displayed.
  - `Minotar::encoder('datauri')` - Using the "datauri" encoder causes Minotars to be, expected, displayed as [Data URIs](http://css-tricks.com/data-uris/). This may be useful in some cases, and is quite easy to set up. The primary disadvantage is that the client's browser will not cache the displayed Minotars. It may be desirable to use in some cases, such as displaying many small Minotars, for example.
- - `Minotar::encoder('serve')` - The `serve` encoder is a bit of a special one. It returns a response (Symfony/HttpKernel) with the requested image, and caching headers built-in to tell the user's browser to cache the Minotar. This is designed to be used in tandem with the "url" encoder (see the example above).
+ - `Minotar::encoder('server')` - The `server` encoder is a bit of a special one. It returns a [Symfony/HttpFoundation](http://symfony.com/doc/current/components/http_foundation/introduction.html#response) response with the requested image, and caching headers built-in to tell the user's browser to cache the Minotar. This is designed to be used in tandem with the "url" encoder (see the example above).
 
 ## Closing Remarks
 
 Feel free to read through the code if you'd like a better understanding of what's happening. Fork, share, use, and contribute.
+
+### Extending
+
+This package is fairly extensible. It's build around [illuminate/container](https://github.com/illuminate/container) for its dependency injection. For example, you can inject your own custom encoders or adapters if you want to (or contribute them here!), via `Minotar::app()`. Few things are bound tightly; you can inject any of your own components to minotar-php pretty easily.
 
 ### Contributing
 To contribute:
