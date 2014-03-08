@@ -17,12 +17,12 @@
     "require": {
         "php": ">=5.3.0",
         "symfony/http-foundation": "~2.4",
-        "desarrolla2/cache": "v1.7.*",
+        "desarrolla2/cache": "v1.7.0",
         "illuminate/container": "4.1.*"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "3.7.*",
-        "satooshi/php-coveralls": "v0.6.*"
+        "satooshi/php-coveralls": "v0.6.0"
     }
 }
