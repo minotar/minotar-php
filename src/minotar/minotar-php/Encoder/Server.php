@@ -25,7 +25,7 @@ class Server implements MinotarEncoderInterface
             return $this->generate400();
         }
 
-        return $this->generateReponse($config, $image);
+        return $this->generateResponse($config, $image);
     }
 
     /**
@@ -34,7 +34,7 @@ class Server implements MinotarEncoderInterface
      * @param $image string
      * @return Response
      */
-    protected function generateReponse($config, $image)
+    protected function generateResponse($config, $image)
     {
         $response = new Response($image, 200, array('Content-Type' => 'image/png'));
 

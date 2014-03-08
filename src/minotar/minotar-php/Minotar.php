@@ -14,11 +14,9 @@ class Minotar {
      * @var array List of default configurations, as used in make(). The "cache" is capitalized and passed off to
      *            desarrolla2/Cache. See the docs on that here: https://github.com/desarrolla2/Cache
      */
-    protected static $default = array(
-        'cache'    => null,
+    protected static $config = array(
         'time'     => 60,
-        'timeout'  => 2,
-        'encoder'  => null
+        'timeout'  => 2
     );
 
     /**
@@ -31,11 +29,9 @@ class Minotar {
      * @param array $config
      * @return MinotarDisplay
      */
-    public static function make($config = array())
+    public static function config($config = array())
     {
-        $finalConfig = array_merge(self::$default, $config);
-
-        return self::app()->make('Minotar\\MinotarDisplay', array($finalConfig));
+        self::$config = array_merge(self::$config, $config);
     }
 
     /**
@@ -105,14 +101,14 @@ class Minotar {
     }
 
     /**
-     * Magic method to allow for quick calling of MinotarDisplays with the default config.
+     * Magic method to allow for quick calling of MinotarDisplays with the current config.
      * @param $name
      * @param $arguments
      * @return mixed
      */
     public static function __callStatic($name, $arguments)
     {
-        $m = self::app()->make('Minotar\\MinotarDisplay', array(self::$default));
+        $m = self::app()->make('Minotar\\MinotarDisplay', array(self::$config));
 
         return call_user_func_array(array($m, $name), $arguments);
     }

@@ -24,17 +24,15 @@ This is a basic example, showing how one would cache Minotars to your server, an
 Minotar\Minotar::encoder('url', 'http://example.com/serve.php');
 // And the "adapter" to use for caching
 Minotar\Minotar::adapter('file', your/cache/directory');
-
-$minotar = Minotar\Minotar::make(array(
-	'time' => 60
-));
+// Set the cache to exist for 60 minutes
+Minotar\Minotar::config(array('time' => 60));
 ```
 
 ##### index.php
 ```
 include('minotar.php');
 
-$minotar->avatar('connor4312');
+Minotar\Minotar::avatar('connor4312');
 ```
 
 ##### serve.php
@@ -42,7 +40,9 @@ $minotar->avatar('connor4312');
 include('minotar.php');
 // To serve requests, it's just a different encoder!
 Minotar\Minotar::adapter('serve');
-Minotar::get(@$_GET['minotar'])->send(); // The minotar path is appended here
+
+// Note: it is important that *nothing*, not even a blank line, is send before this
+Minotar::get(@$_GET['minotar'])->send();
 ```
 
 Not too hard, eh? Read on for some more fun and advanced usage.

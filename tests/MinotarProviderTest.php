@@ -10,14 +10,6 @@ class MinotarProvideTest extends PHPUnit_Framework_TestCase
         m::close();
     }
 
-    public function testGivesMinotarDisplay()
-    {
-        $m = m::mock('Minotar\\MinotarDisplay');
-        Minotar::app()->instance('Minotar\\MinotarDisplay', $m);
-
-        $this->assertEquals($m, Minotar::make(), 'Minotar is not given by the provider, nothing works D:');
-    }
-
     public function testProvidesAdapter()
     {
         $m = m::mock('Desarrolla2\\Cache\\Adapter\\AbstractAdapter');
