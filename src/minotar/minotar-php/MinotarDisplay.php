@@ -2,17 +2,29 @@
 
 namespace Minotar;
 
+use \Desarrolla2\Cache\Adapter\AbstractAdapter;
+
 class MinotarDisplay {
 
-    protected $config;
     /**
-     * @var MinotarResourceInterface The resource handler to use for displaying graphics
+     * @var array Array of configuration options for the encoder
+     */
+    protected $config;
+
+    /**
+     * @var MinotarEncoderInterface The encoder to use
+     */
+    protected $encoder;
+
+    /**
+     * @var MinotarEncoderInterface The resource handler to use for displaying graphics
      */
     public $resource;
 
-    public function __construct(array $config)
+    public function __construct(array $config, MinotarEncoderInterface $encoder)
     {
         $this->config = $config;
+        $this->encoder = $encoder;
     }
 
     /**
@@ -74,7 +86,7 @@ class MinotarDisplay {
      */
     public function avatar($username, $size = null)
     {
-        return $this->config['adapter']->get('avatar/' . $username . '/size');
+        return $this->encoder->get($this->config, 'avatar/' . $username . '/size');
     }
 
     /**
@@ -85,7 +97,7 @@ class MinotarDisplay {
      */
     public function helm($username, $size)
     {
-        return $this->config['adapter']->get('helm/' . $username . '/size');
+        return $this->encoder->get($this->$config, 'helm/' . $username . '/size');
     }
 
     /**
@@ -96,6 +108,6 @@ class MinotarDisplay {
      */
     public function skin($username, $size)
     {
-        return $this->config['adapter']->get('avatar/' . $username . '/size');
+        return $this->encoder->get($this->$config, 'avatar/' . $username . '/size');
     }
 } 

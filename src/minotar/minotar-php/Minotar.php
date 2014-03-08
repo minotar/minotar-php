@@ -43,14 +43,11 @@ class Minotar {
      */
     public static function adapter()
     {
-        $args = func_get_args();
+        $instance = self::spawn(func_get_args(), 'Desarrolla2\\Cache\\Adapter');
 
-        $adapter_name = array_shift($args);
-        $adapter_path = 'Desarrolla2\\Cache\\Adapter\\' . ucfirst($adapter_name);
+        self::app()->instance('Desarrolla2\\Cache\\Adapter\\AbstractAdapter', $instance);
 
-        $reflection = new \ReflectionClass($adapter_path);
-
-        return $reflection->newInstanceArgs(func_get_args());
+        return $instance;
     }
 
     /**
@@ -59,16 +56,31 @@ class Minotar {
      */
     public static function encoder()
     {
-        $args = func_get_args();
+        $instance = self::spawn(func_get_args(), 'Encoder');
 
-        $adapter_name = array_shift($args);
-        $adapter_path = 'Encoder\\' . ucfirst($adapter_name);
+        self::app()->instance('Minotar\\MinotarEncoderInterface', $instance);
 
-        $reflection = new \ReflectionClass($adapter_path);
-
-        return $reflection->newInstanceArgs(func_get_args());
+        return $instance;
     }
 
+    /**
+     * Generates an object, with the given array of instantiation arguments
+     * @param array $args The first element should be the name of the object
+     * @param string $base Base namespace
+     * @return object
+     */
+    protected static function spawn($args, $base)
+    {
+        $obj_name = array_shift($args);
+        $obj_path = $base . '\\' . ucfirst($obj_name);
+
+        return self::app()->make($obj_path, $args);
+    }
+
+    /**
+     * Retrieve the IoC container for Minotar
+     * @return Container
+     */
     public static function app()
     {
         if (!self::$container) {

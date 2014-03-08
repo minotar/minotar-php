@@ -1,12 +1,12 @@
 <?php
 
-use Minotar\MinotarDisplay;
+use Minotar\Minotar;
 
 class MinotarDisplayTest extends PHPUnit_Framework_TestCase {
 
     public function testGetConfig()
     {
-        $m = new MinotarDisplay(array('foo' => 'bar'));
+        $m = Minotar::make(array('foo' => 'bar'));
 
         $this->assertEquals($m->getConfig('foo'), 'bar', 'MinotarDisplay does not retrieve the given config by string');
 
@@ -17,7 +17,7 @@ class MinotarDisplayTest extends PHPUnit_Framework_TestCase {
 
     public function testSetConfigByString()
     {
-        $m = new MinotarDisplay(array('foo' => 'asdf'));
+        $m = Minotar::make(array('foo' => 'asdf'));
         $m->setConfig('foo', 'bar');
 
         $this->assertEquals($m->getConfig('foo'), 'bar', 'MinotarDisplay does not set the given config by string');
@@ -25,7 +25,7 @@ class MinotarDisplayTest extends PHPUnit_Framework_TestCase {
 
     public function testSetConfigByArray()
     {
-        $m = new MinotarDisplay(array());
+        $m = Minotar::make(array());
         $m->setConfig(array('foo' => 'bar'));
 
         $this->assertEquals($m->getConfig('foo'), 'bar', 'MinotarDisplay does not set the given config by array');
@@ -34,7 +34,7 @@ class MinotarDisplayTest extends PHPUnit_Framework_TestCase {
     public function testThrowsExceptionOnInvalidConfig() {
         $this->setExpectedException('Minotar\Exception\ConfigNotFoundException');
 
-        $m = new MinotarDisplay(array());
+        $m = Minotar::make(array());
         $m->getConfig('foo');
     }
 } 

@@ -14,80 +14,19 @@ This comes as a [Composer](https://getcomposer.org/doc/00-intro.md) package. Com
     },
 ```
 
-### Usage
+## Example
+This is a basic example, showing how one would cache Minotars to your server, and define a page to serve them off of.
 
-This package is designed to get you off the ground as easily as possible. If you just want to get going, you can call the Display methods simply:
-
-```
-	echo Minotar\Minotar::avatar('steve');
-	echo Minotar\Minotar::helm('steve', 200);
-	echo Minotar\Minotar::skin('steve');
-```
-Notice what I did on the second line, there. `avatar()` and `helm()` both take a second optional argument, to tell it what size of helm or avatar you'd like. By default, this just echoes out the raw Minotar URL. But you came for caching, and here you go!
-
-To customize the configuration of Minotar, you'll want to first `make()` your own, custom Display object. This can take an array of configuration options. By default, the array looks like:
+#### minotar.php
 
 ```
-   array(
-        'cache'    => null,  // Cache adapter to use
-        'time'     => 60,    // Minutes to cache for
-        'encoder'  => null' // The output encoder
-    );
-```
-
-We'll look at each of these options in depth a bit down below.
-
-#### Cache
-The cache is what you'll mainly be interested in. Minotar uses the [desarolla2/Cache](https://github.com/desarrolla2/Cache) package to handle its caching, which allows you to cache in file, Apc, Memory, MongoDB, or MySQL. "Memory" is a bit useless here, and you don't want to cache images in MySQL most likely.
-
-To use the file cache, it's as simple as,
-
-```
-	$adapter = Minotar\Minotar::adapter('file', your/cache/directory');
-	Minotar\Minotar::make(array(
-		'cache' => $adapter
-	));
-```
-
-The first argument is the cache adapter to use ("file", in this case), and every additional argument is fed to the adapter in [desarolla2/Cache](https://github.com/desarrolla2/Cache).
-
-Pretty neat, huh? You can check out [the cache docs](https://github.com/desarrolla2/Cache/blob/master/README.md) if you'd like some more information about each adapter.
-
-#### Time
-"Time" is simply the amount of time, in minutes, that you'd like the Minotars to cache for.
-
-#### Encoder
-The Encoder is similar in usage to the Cache.
-
-```
-	$encoder = Minotar\Minotar::encoder('datauri');
-	Minotar\Minotar::make(array(
-		'encoder' => $encoder
-	));
-
-	// Other adapters and usage
-	$encoder = Minotar\Minotar::encoder('raw');
-	$encoder = Minotar\Minotar::encoder('url', 'http://example.com/image.php');
-```
-
-
- - `raw` - This causes the URL of Minotar to be displayed directly, bypassing the server-side cache entirely.
- - `datauri` - This returns a *data URI*, which can be inserted inside an image tag and displayed directly on the page. The disadvantage is that the client's browser will not cache this, but it is quite simple to set up and may be useful in some cases.
- - `url` - This points to a URL on your server, where avatars can be served from (see below for usage).
-
-### URL Cache and Example
-The optimum way to set up minotar-php is to cache, is using the `url` encoder. This causes a cache to be formed on both your server *and* on the client's own machine, reducing load all around. I've written a super simple example setup below, which displays my avatar and caches on the server for three hours:
-
-##### minotar.php
-
-```
-$encoder = Minotar\Minotar::encoder('url', 'http://example.com/serve.php');
-$adapter = Minotar\Minotar::adapter('file', your/cache/directory');
+// First, we want to set the "encoder" to use for display...
+Minotar\Minotar::encoder('url', 'http://example.com/serve.php');
+// And the "adapter" to use for caching
+Minotar\Minotar::adapter('file', your/cache/directory');
 
 $minotar = Minotar\Minotar::make(array(
-	'cache' => $encoder,
-	'adapter' =>  $adapter,
-	'time' => 60 * 3
+	'time' => 60
 ));
 ```
 
@@ -98,14 +37,34 @@ include('minotar.php');
 $minotar->avatar('connor4312');
 ```
 
-##### server.php
+##### serve.php
 ```
 include('minotar.php');
 
 $minotar->serve();
 ```
 
-### Aaand that's it
+Not too hard, eh? Read on for some more fun and advanced usage.
+
+##Components
+The three primary components of minotar-php are the *adapters*, *encoders*, and the MinotarDisplay itself. These are accessed through a facade, `Minotar\Minotar` that passes off appropriate calls.
+
+### Minotar::adapter
+`Minotar::adapter($name, $arguments...)` is actually a proxy to [desarrolla2/Cache](https://github.com/desarrolla2/Cache) adapters.
+
+First you pass in the name, such as "file", or "mongo", to give some examples (see the full list on the package's Github page). If you pass in additional arguments, these will be given to the constructor of the cache. Calling `Minotar::adapter('file', '/directory')` is the equivalent of saying `$adapter = new File($cacheDir);`
+
+After you call this function, subsequent MinotarDisplays that are made will use the formed adapter. `Minotar::adapter` also returns the adapter, allowing you to add additional options or make changes if needed. Again, see the documentation on the Cache package if you're interested in that.
+
+### Minotar::encoder
+`Minotar::encoder($name, $arguments...)` is similar in construction to the `adapter()`. MinotarDisplays use the last formed adapter, and an instance of the adapter is returned. This essentially defines how images will be displayed on your site.
+
+ - `Minotar::encoder('url', 'http://example.com/path/to/serve.php')` - Using the "url" adapter tells Minotar that you are caching and want to serve the images locally, off the given URL.
+ - `Minotar::encoder('raw')` - Using the "raw" encoder will simply cause the default Minotar URL to be displayed.
+ - `Minotar::encoder('data-uri')` - Using the "data-uri" encoder causes Minotars to be, expected, displayed as [Data URIs](http://css-tricks.com/data-uris/). This may be useful in some cases, and is quite easy to set up. The primary disadvantage is that the client's browser will not cache the displayed Minotars. It may be desirable to use in some cases, such as displaying many small Minotars, for example.
+
+## Closing Remarks
+
 Feel free to read through the code if you'd like a better understanding of what's happening. Fork, share, use, and contribute.
 
 ### Contributing
