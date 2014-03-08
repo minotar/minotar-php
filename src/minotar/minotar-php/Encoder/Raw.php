@@ -10,6 +10,6 @@ class Raw implements MinotarEncoderInterface
 
     public function make($config, $path)
     {
-        return MinotarDl::BASE_URL . urlencode($path);
+        return MinotarDl::makeUrl($path);
     }
 } 

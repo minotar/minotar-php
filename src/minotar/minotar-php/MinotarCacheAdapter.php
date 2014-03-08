@@ -32,7 +32,7 @@ class MinotarCacheAdapter implements MinotarAdapterInterface
     {
         $this->config = $config;
 
-        list($date, $data) = $this->getFromCache($path);
+        list($date, $data) = $this->getFromCache(md5($path));
 
         if ($date + $config['time'] < time()) {
             $data = $this->getFromSource($path);
@@ -43,16 +43,16 @@ class MinotarCacheAdapter implements MinotarAdapterInterface
 
     /**
      * Gets an image from the cache, if possible.
-     * @param $path
+     * @param $md5_path
      * @return array|bool
      */
-    public function getFromCache($path)
+    public function getFromCache($md5_path)
     {
-        if (!$this->adapter->has($path)) {
+        if (!$this->adapter->has($md5_path)) {
             return false;
         }
 
-        return explode('|', $this->adapter->get($path), 2);
+        return explode('|', $this->adapter->get($md5_path), 2);
     }
 
     /**
@@ -68,7 +68,7 @@ class MinotarCacheAdapter implements MinotarAdapterInterface
             return false;
         }
 
-        $this->setCache($path, $image);
+        $this->setCache(md5($path), $image);
         return $image;
     }
 

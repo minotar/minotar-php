@@ -22,6 +22,14 @@ class MinotarDl
      */
     const CODE_OKAY = 200;
 
+    public static function makeUrl($path)
+    {
+        $minotar = rtrim(self::BASE_URL, '/');
+        $path = trim($path, '/');
+
+        return $minotar . '/' . $path;
+    }
+
     /**
      * Downloads a path via Curl
      * @param $config array
@@ -32,9 +40,10 @@ class MinotarDl
     {
         $this->checksIfHasCurl();
 
-        $ch = curl_init(self::BASE_URL . $path);
+        $ch = curl_init(self::makeUrl($path));
         curl_setopt($ch, CURLOPT_TIMEOUT, $config['timeout']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $data = curl_exec($ch);
 
         if (curl_getinfo($ch, CURLINFO_HTTP_CODE) != self::CODE_OKAY) {
