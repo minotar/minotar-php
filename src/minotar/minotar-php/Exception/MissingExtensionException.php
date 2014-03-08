@@ -3,6 +3,7 @@
 namespace Minotar\Exception;
 
 
-class MissingExtensionException extends \Exception {
+class MissingExtensionException extends \Exception
+{
 
 } 

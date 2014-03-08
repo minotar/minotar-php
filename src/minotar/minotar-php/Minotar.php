@@ -8,15 +8,16 @@ use \Illuminate\Container\Container;
  * This class is responsible for instantiation of new MinotarDisplay's
  * @package Minotar
  */
-class Minotar {
+class Minotar
+{
 
     /**
      * @var array List of default configurations, as used in make(). The "cache" is capitalized and passed off to
      *            desarrolla2/Cache. See the docs on that here: https://github.com/desarrolla2/Cache
      */
     protected static $config = array(
-        'time'     => 60,
-        'timeout'  => 2
+        'time' => 60,
+        'timeout' => 2
     );
 
     /**

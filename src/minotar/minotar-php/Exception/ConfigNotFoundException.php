@@ -3,6 +3,7 @@
 namespace Minotar\Exception;
 
 
-class ConfigNotFoundException extends \Exception {
+class ConfigNotFoundException extends \Exception
+{
 
 } 

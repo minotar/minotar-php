@@ -24,7 +24,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
             'Server encoder does not return a Symfony response'
         );
 
-        $this->assertEquals(200, $response->getStatusCode(),  'Server does not return 200 status on successful image.');
+        $this->assertEquals(200, $response->getStatusCode(), 'Server does not return 200 status on successful image.');
     }
 
     public function testSendsFailedResponse()
@@ -34,6 +34,6 @@ class ServerTest extends PHPUnit_Framework_TestCase
         $encoder = new Server($adapter);
         $response = $encoder->make(array('time' => 60), '');
 
-        $this->assertEquals(400, $response->getStatusCode(),  'Server does not return 400 status on failed image.');
+        $this->assertEquals(400, $response->getStatusCode(), 'Server does not return 400 status on failed image.');
     }
 } 

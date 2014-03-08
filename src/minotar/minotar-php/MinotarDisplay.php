@@ -3,7 +3,8 @@
 namespace Minotar;
 
 
-class MinotarDisplay {
+class MinotarDisplay
+{
 
     /**
      * @var array Array of configuration options for the encoder

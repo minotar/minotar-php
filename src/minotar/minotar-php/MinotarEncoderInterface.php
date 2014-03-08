@@ -3,7 +3,8 @@
 namespace Minotar;
 
 
-interface MinotarEncoderInterface {
+interface MinotarEncoderInterface
+{
     /**
      * Returns a response for the given image string
      * @param $config array

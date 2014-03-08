@@ -9,6 +9,10 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $encoder = new Url('http://example.com/serve.php');
         $str = $encoder->make(array(), 'foo');
 
-        $this->assertEquals('http://example.com/serve.php?minotar=foo', $str, 'Url encoder does not successfully generate URLs.');
+        $this->assertEquals(
+            'http://example.com/serve.php?minotar=foo',
+            $str,
+            'Url encoder does not successfully generate URLs.'
+        );
     }
 } 

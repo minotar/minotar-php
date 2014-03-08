@@ -4,7 +4,8 @@ namespace Minotar;
 
 use Desarrolla2\Cache\Adapter\AbstractAdapter;
 
-class MinotarCacheAdapter implements MinotarAdapterInterface {
+class MinotarCacheAdapter implements MinotarAdapterInterface
+{
 
     /**
      * @var AbstractAdapter The cache adapter

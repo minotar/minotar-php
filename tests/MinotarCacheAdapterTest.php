@@ -18,7 +18,10 @@ class MinotarCacheAdapterTest extends PHPUnit_Framework_TestCase
 
         $cache = new MinotarCacheAdapter($adapter, $dl);
 
-        $this->assertFalse($cache->getFromCache('foo'), 'CacheAdapter is not failing to load from cache if items do not exist.');
+        $this->assertFalse(
+            $cache->getFromCache('foo'),
+            'CacheAdapter is not failing to load from cache if items do not exist.'
+        );
     }
 
     public function testGetsFromCacheIfExists()
@@ -30,7 +33,11 @@ class MinotarCacheAdapterTest extends PHPUnit_Framework_TestCase
 
         $cache = new MinotarCacheAdapter($adapter, $dl);
 
-        $this->assertEquals($cache->getFromCache('foo'), array('date', 'data'), 'CacheAdapter is not loading/exploding items from cache.');
+        $this->assertEquals(
+            $cache->getFromCache('foo'),
+            array('date', 'data'),
+            'CacheAdapter is not loading/exploding items from cache.'
+        );
     }
 
     public function testFailsIfDownloadFails()
@@ -67,7 +74,11 @@ class MinotarCacheAdapterTest extends PHPUnit_Framework_TestCase
 
         $cache = new MinotarCacheAdapter($adapter, $dl);
 
-        $this->assertEquals('bar', $cache->retrieve(array('time' => 0), 'foo'), 'CacheAdapter is not refreshing old image.');
+        $this->assertEquals(
+            'bar',
+            $cache->retrieve(array('time' => 0), 'foo'),
+            'CacheAdapter is not refreshing old image.'
+        );
     }
 
     public function testPassesCacheIfUpdated()
@@ -79,6 +90,10 @@ class MinotarCacheAdapterTest extends PHPUnit_Framework_TestCase
 
         $cache = new MinotarCacheAdapter($adapter, $dl);
 
-        $this->assertEquals('data', $cache->retrieve(array('time' => 999999999), 'foo'), 'CacheAdapter is not refreshing old image.');
+        $this->assertEquals(
+            'data',
+            $cache->retrieve(array('time' => 999999999), 'foo'),
+            'CacheAdapter is not refreshing old image.'
+        );
     }
 } 

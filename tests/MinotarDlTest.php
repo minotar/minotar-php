@@ -13,6 +13,7 @@ class MinotarDlTest extends PHPUnit_Framework_TestCase
         $c = new MinotarDl;
         try {
             $c->download(array('timeout' => 1), 'avatar/connor4312');
-        } catch (MissingExtensionException $e) {} // Don't particular care if Curl isn't installed during testing
+        } catch (MissingExtensionException $e) {
+        } // Don't particularly care if Curl isn't installed during testing
     }
 } 
