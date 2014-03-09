@@ -67,7 +67,7 @@ class MinotarCacheAdapterTest extends PHPUnit_Framework_TestCase
     {
         $adapter = m::mock('Desarrolla2\\Cache\\Adapter\\AbstractAdapter');
         $adapter->shouldReceive('has')->andReturn(true);
-        $adapter->shouldReceive('get')->with('foo')->andReturn('0|data');
+        $adapter->shouldReceive('get')->with(md5('foo'))->andReturn('0|data');
         $adapter->shouldReceive('set')->andReturn(true);
         $dl = m::mock('Minotar\\MinotarDl');
         $dl->shouldReceive('download')->andReturn('bar');
@@ -85,7 +85,7 @@ class MinotarCacheAdapterTest extends PHPUnit_Framework_TestCase
     {
         $adapter = m::mock('Desarrolla2\\Cache\\Adapter\\AbstractAdapter');
         $adapter->shouldReceive('has')->andReturn(true);
-        $adapter->shouldReceive('get')->with('foo')->andReturn('999999999|data');
+        $adapter->shouldReceive('get')->with(md5('foo'))->andReturn('999999999|data');
         $dl = m::mock('Minotar\\MinotarDl');
 
         $cache = new MinotarCacheAdapter($adapter, $dl);
